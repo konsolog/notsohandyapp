@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not So Handy Day App</title>
+    <style>
+        @font-face {
+            font-family: "Thames";
+            src: url(./ThamesSerial.woff) format('woff');
+        }
+
+        .thames {
+            font-family: "Thames";
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .marquee {
+            animation: marquee 20s linear 0s infinite;
+        }
+
+        .triangle {
+            width: 0px;
+            height: 0px;
+            border-style: solid;
+            border-width: 20px 0 20px 40px;
+            border-color: transparent transparent transparent #030303;
+            transform: rotate(0deg);
+        }
+    </style>
+</head>
+<body style="background-color: #fcfbfc; overflow: hidden;">
+    <div style="background-color: #030303; width: 100%; height: 10%;  top: 0; right: 0; bottom: 0; left: 0; position: absolute;"></div>
+    <div style="background-color: #030303; width: 100%; height: 10%; right: 0; bottom: 0; left: 0; position: absolute;"></div>
+    <div style="height:100%; position: absolute; display: flex; align-items: center; margin-left: 2%;">
+            <p style="color:#030303; font-size: 15vh;" class="thames">You've gone through <br> <span><a id="per">0</a></span>% <br> of the day.</p>
+    </div>
+    <div style="width: 100%; position: absolute; right: 0; bottom: 0; left: 0; margin-bottom: 5%; font-size: 3vh;">
+        <p class="thames marquee" style="color:030303; white-space: pre;">Why spend your time sleeping?   ●   Wake up, get up, get out there.   ●   No point in being idle all day.   ●   "If you live each day as if it were your last, someday you'll be right." - Steve Jobs</p>
+    </div>
+
+    <div style="width: 100%; height:7%; position: absolute; right: 0; bottom: 0; left: 0; top:0; margin-top: 5%; font-size: 3vh; display: flex; justify-content: center; align-items: center;">
+        <p class="thames" id="dayNow" style="color:030303; margin-right: 1vw;">Monday</p>
+        <div style="height: 5px; background-color: #030303; width: 50vw;"></div>
+        <div class="triangle"></div>
+        <p class="thames" id="dayTomorrow" style="color:030303; margin-left: 1vw;">Tuesday</p>
+    </div>
+
+    <script>
+        function DateToPercent(){
+            let date = new Date(Date.now())
+
+            let startOfDay = new Date(date.valueOf())
+
+            startOfDay.setHours(0)
+            startOfDay.setMinutes(0)
+            startOfDay.setSeconds(0)
+            startOfDay.setMilliseconds(0)
+
+            let lengthOfDay = 1000 * 60 * 60 * 24 //ms in a day
+
+            return ( date.valueOf() - startOfDay.valueOf() ) / lengthOfDay * 100
+        }
+
+        setInterval(() => {document.getElementById("per").innerHTML = DateToPercent()}, 800)
+
+        const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+        const d = new Date();
+        let day = weekday[d.getDay()];
+        let tomorrow = new Date(d);
+        tomorrow.setDate(d.getDate() + 1);
+        let dayTomorrow = weekday[tomorrow.getDay()];
+
+        setInterval(() => {document.getElementById("dayNow").innerHTML = day}, 500)
+        setInterval(() => {document.getElementById("dayTomorrow").innerHTML = dayTomorrow}, 500)
+    </script>
+</body>
+</html>
